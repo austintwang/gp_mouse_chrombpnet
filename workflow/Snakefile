@@ -132,7 +132,7 @@ rule import_bias:
     output:
         "inputs/bias_model.h5"
     conda:
-        "../envs/fetch.yaml"
+        "envs/fetch.yaml"
     shell:
         "cp {input} {output}"
 
@@ -147,7 +147,7 @@ rule import_genome:
         fa = "inputs/assembly/{assembly}/genome.fa",
         folds = directory("inputs/assembly/{assembly}/folds")
     conda:
-        "../envs/fetch.yaml"
+        "envs/fetch.yaml"
     shell:
         "cp {input.fa} {output.fa}; "
         "cp -R {input.folds} {output.folds}"
@@ -163,7 +163,7 @@ rule import_atac:
         bw = "inputs/assembly/{assembly}/clusters/{cluster}/coverage.bw",
         peaks = "inputs/assembly/{assembly}/clusters/{cluster}/peaks.narrowPeak"
     conda:
-        "../envs/fetch.yaml"
+        "envs/fetch.yaml"
     shell:
         "cp {input.bw} {output.bw}; "
         "cp {input.peaks} {output.peaks}"
@@ -177,7 +177,7 @@ rule import_negatives:
     output:
         "inputs/assembly/{assembly}/clusters/{cluster}/folds/{fold}/negatives.bed"
     conda:
-        "../envs/fetch.yaml"
+        "envs/fetch.yaml"
     shell:
         "cp {input} {output}"
 
@@ -190,6 +190,6 @@ rule export_results:
     output:
         directory(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/train"))
     conda:
-        "../envs/fetch.yaml"
+        "envs/fetch.yaml"
     shell:
         "cp -R {input} {output}"
