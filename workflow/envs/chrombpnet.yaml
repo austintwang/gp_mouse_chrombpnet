@@ -5,10 +5,9 @@ channels:
 dependencies:
   - conda-forge::python=3.8
   - conda-forge::pip=21.3.1
-  - conda-forge::libcurl-static=7.83.1
   - bioconda::samtools=1.13
   - bioconda::bedtools=2.30.0
   - bioconda::ucsc-bedgraphtobigwig=377
-  - bioconda::meme=5.4.1
+  - bioconda::pybigwig=0.3.18
   - pip: 
     - "--editable=git+ssh://git@github.com/kundajelab/chrombpnet.git@master#egg=chrombpnet"
