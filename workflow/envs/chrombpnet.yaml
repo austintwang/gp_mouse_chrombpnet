@@ -5,7 +5,7 @@ channels:
 dependencies:
   - conda-forge::python=3.8
   - conda-forge::pip=21.3.1
-  - conda-forge::curl=7.79.1
+  - conda-forge::libcurl=7.84.0
   - bioconda::samtools=1.13
   - bioconda::bedtools=2.30.0
   - bioconda::ucsc-bedgraphtobigwig=377
