@@ -107,7 +107,7 @@ max_threads = config["max_threads_per_rule"]
 def script_path(script_name):
     return str(workflow.source_path(script_name))
 
-def input_path(suffix):
+def import_path(suffix):
     return os.path.join(config["input_dir"], suffix)
 
 def export_path(suffix):
