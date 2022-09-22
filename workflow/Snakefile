@@ -131,9 +131,9 @@ rule import_bias:
     Load chrombpnet training inputs
     """
     input:
-        config["bias_model"]
-    output:
         import_path("bias_model.h5")
+    output:
+        "inputs/bias_model.h5"
     conda:
         "../envs/fetch.yaml"
     shell:
