@@ -1,0 +1,200 @@
+import os
+import json
+from collections import defaultdict
+from snakemake.utils import min_version
+from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
+
+min_version("6.6.1")
+
+configfile: 
+    "config/config.yaml"
+
+with open("config/samples.tsv") as sample_file:
+    h = sample_file.readline().rstrip('\n').split('\t')
+    exp_ind = h.index("Experiment")
+    asm_ind = h.index("Assembly")
+    sample_config = {}
+    samples = []
+    samples_in_assembly = {}
+    for line in sample_file:
+        if line.startswith("#"):
+            continue
+        entries = line.rstrip('\n').split('\t')
+        exp = entries[exp_ind]
+        asm = entries[asm_ind]
+        sample_config[exp] = {
+            "experiment": exp,
+            "assembly": asm
+        }
+        samples.append(exp)
+        samples_in_assembly.setdefault(asm, []).append(exp)
+    assemblies = list(samples_in_assembly.keys())
+
+with open("config/cluster_labels_l1.tsv") as sample_file:
+    h = sample_file.readline().rstrip('\n').split('\t')
+    cluster_ind = h.index("cluster")
+    label_ind = h.index("label")
+    organism_ind = h.index("organism")
+    cluster_names_l1 = {}
+    clusters_l1 = set()
+    for line in sample_file:
+        if line.startswith("#"):
+            continue
+        entries = line.rstrip('\n').split('\t')
+        cluster = entries[cluster_ind]
+        label = entries[label_ind]
+        organism = entries[organism_ind]
+        cluster_names_l1.setdefault(organism, {"orig": [], "names": []})
+        cluster_names_l1[organism]["orig"].append(cluster)
+        cluster_names_l1[organism]["names"].append(label)    
+        clusters_l1.add(label)
+
+with open("config/cluster_labels_l2.tsv") as sample_file:
+    h = sample_file.readline().rstrip('\n').split('\t')
+    cluster_ind = h.index("cluster")
+    label_l1_ind = h.index("label_l1")
+    label_l2_ind = h.index("label_l2")
+    organism_ind = h.index("organism")
+    cluster_names_l2 = {}
+    l2_l1_map = {}
+    clusters_l2 = set()
+    for line in sample_file:
+        if line.startswith("#"):
+            continue
+        entries = line.rstrip('\n').split('\t')
+        cluster = entries[cluster_ind]
+        label_l1 = entries[label_l1_ind]
+        label_l2 = entries[label_l2_ind]
+        organism = entries[organism_ind]
+        cluster_names_l2.setdefault((organism, label_l1), {"orig": [], "names": []})
+        cluster_names_l2[(organism, label_l1)]["orig"].append(cluster)
+        cluster_names_l2[(organism, label_l1)]["names"].append(label_l2)    
+        l2_l1_map[label_l2] = label_l1
+        clusters_l2.add(label_l2)
+
+with open("config/cluster_labels_l3.tsv") as sample_file:
+    h = sample_file.readline().rstrip('\n').split('\t')
+    cluster_ind = h.index("cluster")
+    label_l2_ind = h.index("label_l2")
+    label_l3_ind = h.index("label_l3")
+    organism_ind = h.index("organism")
+    cluster_names_l3 = {}
+    l3_l2_map = {}
+    clusters_l3 = set()
+    clusters_l2_rem = set()
+    for line in sample_file:
+        if line.startswith("#"):
+            continue
+        entries = line.rstrip('\n').split('\t')
+        cluster = entries[cluster_ind]
+        label_l2 = entries[label_l2_ind]
+        label_l3 = entries[label_l3_ind]
+        organism = entries[organism_ind]
+        cluster_names_l3.setdefault((organism, label_l2), {"orig": [], "names": []})
+        cluster_names_l3[(organism, label_l2)]["orig"].append(cluster)
+        cluster_names_l3[(organism, label_l2)]["names"].append(label_l3)    
+        l3_l2_map[label_l3] = label_l2
+        clusters_l3.add(label_l3)
+        clusters_l2_rem.add(label_l2)
+    clusters_l3 |= clusters_l2 - clusters_l2_rem
+
+
+workdir: 
+    config['workdir']
+
+max_threads = config["max_threads_per_rule"]
+
+def script_path(script_name):
+    return str(workflow.source_path(script_name))
+
+def import_path(suffix):
+    return os.path.join(config["chrombpnet_export_prefix"], suffix)
+
+include:
+    "rules/chrombpnet.smk"
+
+
+rule all:
+    """
+    Generate all outputs (default)
+    """
+    input: 
+        expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/train"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
+        
+
+def input_path(suffix):
+    return os.path.join(config["input_dir"], suffix)
+
+def export_path(suffix):
+    return os.path.join(config["export_dir"], suffix)
+
+rule import_bias:
+    """
+    Load chrombpnet training inputs
+    """
+    input:
+        config["bias_model"]
+    output:
+        import_path("bias_model.h5")
+    conda:
+        "../envs/fetch.yaml"
+    shell:
+        "cp {input} {output}"
+
+rule import_genome:
+    """
+    Load chrombpnet training inputs
+    """
+    input:
+        fa = import_path("assembly/{assembly}/genome.fa"),
+        folds = import_path("assembly/{assembly}/folds")
+    output:
+        fa = "inputs/assembly/{assembly}/genome.fa",
+        folds = directory("inputs/assembly/{assembly}/folds")
+    conda:
+        "../envs/fetch.yaml"
+    shell:
+        "cp {input.fa} {output.fa}; "
+        "cp -R {input.folds} {output.folds}"
+
+rule import_atac:
+    """
+    Load chrombpnet training
+    """
+    input:
+        bw = import_path("assembly/{assembly}/clusters/{cluster}/coverage.bw"),
+        peaks = import_path("assembly/{assembly}/clusters/{cluster}/peaks.narrowPeak")
+    output:
+        bw = "inputs/assembly/{assembly}/clusters/{cluster}/coverage.bw",
+        peaks = "inputs/assembly/{assembly}/clusters/{cluster}/peaks.narrowPeak"
+    conda:
+        "../envs/fetch.yaml"
+    shell:
+        "cp {input.bw} {output.bw}; "
+        "cp {input.peaks} {output.peaks}"
+
+rule import_negatives:
+    """
+    Load chrombpnet training 
+    """
+    input:
+        import_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/negatives.bed")
+    output:
+        "inputs/assembly/{assembly}/clusters/{cluster}/folds/{fold}/negatives.bed"
+    conda:
+        "../envs/fetch.yaml"
+    shell:
+        "cp {input} {output}"
+
+rule export_results:
+    """
+    Export chrombpnet training results
+    """
+    input:
+        "results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/train"
+    output:
+        directory(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/train"))
+    conda:
+        "../envs/fetch.yaml"
+    shell:
+        "cp -R {input} {output}"
