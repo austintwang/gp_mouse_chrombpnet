@@ -113,6 +113,11 @@ def import_path(suffix):
 include:
     "rules/chrombpnet.smk"
 
+def input_path(suffix):
+    return os.path.join(config["input_dir"], suffix)
+
+def export_path(suffix):
+    return os.path.join(config["export_dir"], suffix)
 
 rule all:
     """
@@ -120,13 +125,6 @@ rule all:
     """
     input: 
         expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/train"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
-        
-
-def input_path(suffix):
-    return os.path.join(config["input_dir"], suffix)
-
-def export_path(suffix):
-    return os.path.join(config["export_dir"], suffix)
 
 rule import_bias:
     """
