@@ -108,7 +108,7 @@ def script_path(script_name):
     return str(workflow.source_path(script_name))
 
 def import_path(suffix):
-    return os.path.join(config["input_dir"], suffix)
+    return os.path.join(config["import_dir"], suffix)
 
 def export_path(suffix):
     return os.path.join(config["export_dir"], suffix)
