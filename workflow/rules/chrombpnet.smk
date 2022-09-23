@@ -24,7 +24,7 @@ rule chrombpnet_train:
     shell:
         "export CUDNN=cudnn-8.1_cuda11.2; "
         "export cuda=cuda-11.2; "
-        "export LD_LIBRARY_PATH=/usr/local/$cuda/lib64:/usr/local/$CUDNN/lib64:/usr/local/$CUDNN/include:/usr/local/$cuda/extras/CUPTI/lib64:/usr/local/lib:$LD_LIBRARY_PATH; "
+        "export LD_LIBRARY_PATH=/usr/local/$cuda/lib64:/usr/local/$CUDNN/lib64:/usr/local/$CUDNN/include:/usr/local/$cuda/extras/CUPTI/lib64:/usr/local/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}; "
         "export PATH=/usr/local/$cuda/bin:$PATH; "
         "export CUDA_HOME=/usr/local/$cuda; "
         "export CPATH='/usr/local/$CUDNN/include:${{CPATH}}'; "
