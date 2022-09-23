@@ -33,4 +33,4 @@ rule chrombpnet_train:
         # "export CPLUS_INCLUDE_PATH=/usr/local/$cuda/include; "
         "mkdir -p {output}; "
         "step6_train_chrombpnet_model.sh {input.fasta} {input.bigwig} {input.peaks} {input.negatives} " 
-        "{input.folds}/fold_{wildcards.fold}.json {input.bias_model} {output} ATAC_PE > {log.train}"
+        "{input.folds}/fold_{wildcards.fold}.json {input.bias_model} {output} ATAC_PE &> {log.train}"
