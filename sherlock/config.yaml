@@ -2,7 +2,7 @@ use-conda: True
 cluster: "sbatch --parsable -p akundaje,gpu,owners {resources.gpu_cmd} --ntasks 1 --cpus-per-task {threads} --mem {resources.mem_mb} --time {resources.runtime}"
 cluster-cancel: scancel
 default-resources: 
-  - runtime="2:00"
+  - runtime="2:00:00"
   - mem_mb=1000
   - gpu_cmd=""
 
