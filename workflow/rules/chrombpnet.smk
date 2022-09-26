@@ -15,7 +15,7 @@ rule chrombpnet_train:
     log:
         train = "logs/assembly/{assembly}/clusters/{cluster}/folds/{fold}/train.txt"
     resources:
-        mem_mb = 30000,
+        mem_mb = 40000,
         runtime = "24:00:00",
         partitions = "akundaje,gpu,owners",
         gpu_cmd = "-G 1 -C 'GPU_MEM:40GB|GPU_MEM:32GB|GPU_MEM:24GB|GPU_MEM:16GB|GPU_SKU:A100_PCIE|GPU_SKU:A100_SXM4|GPU_SKU:P100_PCIE|GPU_SKU:V100_PCIE|GPU_SKU:TITAN_V|GPU_SKU:V100S_PCIE|GPU_SKU:V100_SXM2'"
