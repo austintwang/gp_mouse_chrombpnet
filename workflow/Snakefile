@@ -126,6 +126,7 @@ rule all:
         expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/train"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
         expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
         expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
+        expand(export_path("assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"), assembly=assemblies, cluster=clusters_l3)
 
 rule import_bias:
     """
@@ -213,3 +214,16 @@ rule export_results_predict:
     shell:
         "cp -R {input.pred_ss} {output.pred_ss}; "
         "cp -R {input.pred_xs} {output.pred_xs}; "
+
+rule export_peak_scores:
+    """
+    Export chrombpnet genome transfer peak scores
+    """
+    input:
+        "results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"
+    output:
+        export_path("assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv")
+    conda:
+        "envs/fetch.yaml"
+    shell:
+        "cp {input} {output}"

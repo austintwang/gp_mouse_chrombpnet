@@ -80,16 +80,16 @@ use rule peaks_global_chrombpnet_predict as peaks_global_chrombpnet_predict_xs w
     log:
         transfer = "logs/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs.txt"
 
-rule xs_global_visualize:
+rule score_peaks:
     """
-    Visualize projection performance
+    Score peaks across species using genome transfer
     """
     input:
-        ss_data = "results_merged/{assembly}/xs_chrombpnet_global/markers_{cluster}/fold_{fold}_peaks_chrombpnet_predict_ss",
-        xs_data = "results_merged/{assembly}/xs_chrombpnet_global/markers_{cluster}/fold_{fold}_peaks_chrombpnet_predict_xs"
+        ss_data = expand("results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss", fold=config["folds_used"], allow_missing=True),
+        xs_data = expand("results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs", fold=config["folds_used"], allow_missing=True)
     output:
-        directory("results_merged/{assembly}/xs_chrombpnet_global/markers_{cluster}/fold_{fold}_peaks_chrombpnet_compare")
+        "results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"
     conda:
-        "../envs/chrombpnet_legacy.yaml"
+        "../envs/genome_transfer.yaml"
     script:
-        "../scripts/xs_chrombpnet_global_visualize.py"
+        "../scripts/score_peaks.py"
