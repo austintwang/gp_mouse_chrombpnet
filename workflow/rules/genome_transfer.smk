@@ -19,13 +19,27 @@ rule build_folds_all:
     script:
         "../scripts/build_folds_all.py"
 
+rule filter_edge_peaks:
+    """
+    Build dummy test fold containing all peaks
+    """
+    input:
+        peaks = "inputs/assembly/{assembly}/clusters/{cluster}/peaks.narrowPeak",
+        bigwig = "inputs/assembly/{assembly}/clusters/{cluster}/coverage.bw",
+    output:
+        "results/assembly/{assembly}/clusters/{cluster}/peaks_edge_filtered.bed"
+    conda:
+        "../envs/chrombpnet.yaml"
+    script:
+        "../scripts/filter_edge_peaks.py"
+
 rule peaks_global_chrombpnet_predict:
     """
     Run chrombpnet on peak regions
     """
     input:
         fasta = "inputs/assembly/{assembly}/genome.fa",
-        peaks = "inputs/assembly/{assembly}/clusters/{cluster}/peaks.narrowPeak",
+        peaks = "results/assembly/{assembly}/clusters/{cluster}/peaks_edge_filtered.bed",
         train_dir = "results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/train",
         bigwig = "inputs/assembly/{assembly}/clusters/{cluster}/coverage.bw",
         folds = "genomes/{assembly}_folds_all.json"
@@ -57,7 +71,7 @@ rule peaks_global_chrombpnet_predict:
 use rule peaks_global_chrombpnet_predict as peaks_global_chrombpnet_predict_xs with:
     input:
         fasta = "inputs/assembly/{assembly}/genome.fa",
-        peaks = "inputs/assembly/{assembly}/clusters/{cluster}/peaks.narrowPeak",
+        peaks = "results/assembly/{assembly}/clusters/{cluster}/peaks_edge_filtered.bed",
         train_dir = lambda w: f"results/assembly/{other_asm(w.assembly)}/clusters/{w.cluster}/folds/{w.fold}/train",
         bigwig = "inputs/assembly/{assembly}/clusters/{cluster}/coverage.bw",
         folds = "genomes/{assembly}_folds_all.json"
