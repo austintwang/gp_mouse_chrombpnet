@@ -123,9 +123,9 @@ rule all:
     Generate all outputs (default)
     """
     input: 
-        expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/train"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
-        expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
-        expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
+        # expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/train"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
+        # expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
+        # expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
         expand(export_path("assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"), assembly=assemblies, cluster=clusters_l3)
 
 rule import_bias:
