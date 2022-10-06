@@ -1,3 +1,11 @@
+def other_asm(assembly):
+    if assembly == "mm10":
+        return "cavpor3"
+    elif assembly == "cavpor3":
+        return "mm10"
+    else:
+        raise ValueError
+
 rule build_folds_all:
     """
     Build dummy test fold containing all peaks
