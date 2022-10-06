@@ -185,21 +185,31 @@ rule import_negatives:
     shell:
         "cp {input} {output}"
 
-rule export_results:
+rule export_results_train:
     """
     Export chrombpnet training results
     """
     input:
         train = "results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/train",
+    output:
+        train = directory(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/train")),
+    conda:
+        "envs/fetch.yaml"
+    shell:
+        "cp -R {input.train} {output.train}; "
+
+rule export_results_predict:
+    """
+    Export chrombpnet prediction results
+    """
+    input:
         pred_ss = "results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss",
         pred_xs = "results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs"
     output:
-        train = directory(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/train")),
         pred_ss = directory(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss")),
         pred_xs = directory(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs")),
     conda:
         "envs/fetch.yaml"
     shell:
-        "cp -R {input.train} {output.train}; "
         "cp -R {input.pred_ss} {output.pred_ss}; "
         "cp -R {input.pred_xs} {output.pred_xs}; "
