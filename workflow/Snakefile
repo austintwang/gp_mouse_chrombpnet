@@ -122,6 +122,8 @@ rule all:
     """
     input: 
         expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/train"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
+        expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
+        expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
 
 rule import_bias:
     """
@@ -186,10 +188,16 @@ rule export_results:
     Export chrombpnet training results
     """
     input:
-        "results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/train"
+        train = "results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/train",
+        pred_ss = "results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss",
+        pred_xs = "results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs"
     output:
-        directory(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/train"))
+        train = directory(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/train")),
+        pred_ss = directory(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss")),
+        pred_xs = directory(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs")),
     conda:
         "envs/fetch.yaml"
     shell:
-        "cp -R {input} {output}"
+        "cp -R {input.train} {output.train}; "
+        "cp -R {input.pred_ss} {output.pred_ss}; "
+        "cp -R {input.pred_xs} {output.pred_xs}; "
