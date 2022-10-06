@@ -2,7 +2,7 @@ import json
 import os
 
 def main(folds_dir, out_path):
-    in_path = os.paht.join(folds_dir, "fold_0.json")
+    in_path = os.path.join(folds_dir, "fold_0.json")
     with open(in_path) as f:
         data = json.load(f)
 
