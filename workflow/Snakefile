@@ -115,6 +115,8 @@ def export_path(suffix):
 
 include:
     "rules/chrombpnet.smk"
+include:
+    "rules/genome_transfer.smk"
 
 rule all:
     """
