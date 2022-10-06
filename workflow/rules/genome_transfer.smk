@@ -5,7 +5,7 @@ rule build_folds_all:
     input:
         "inputs/assembly/{assembly}/folds"
     output:
-        "genomes/{assembly}_folds_all"
+        "genomes/{assembly}_folds_all.json"
     conda:
         "../envs/fetch.yaml"
     script:
