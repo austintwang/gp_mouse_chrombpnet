@@ -58,7 +58,7 @@ use rule peaks_global_chrombpnet_predict as peaks_global_chrombpnet_predict_xs w
     input:
         fasta = "inputs/assembly/{assembly}/genome.fa",
         peaks = "inputs/assembly/{assembly}/clusters/{cluster}/peaks.narrowPeak",
-        model_dir = lambda w: f"results/assembly/{other_asm(w.assembly)}/clusters/{w.cluster}/folds/{w.fold}/train",
+        train_dir = lambda w: f"results/assembly/{other_asm(w.assembly)}/clusters/{w.cluster}/folds/{w.fold}/train",
         bigwig = "inputs/assembly/{assembly}/clusters/{cluster}/coverage.bw",
         folds = "genomes/{assembly}_folds_all.json"
     output:
