@@ -81,7 +81,6 @@ def main(ss_paths, xs_paths, out_path, log_path):
     #     print(v.shape)
     #     print(v) 
     table = pd.DataFrame(cols)
-    df[col] = df[col].str.decode('utf-8')
     table.sort_values("-log10q", inplace=True)
 
     table.to_csv(out_path, sep="\t", index=False)
