@@ -45,11 +45,11 @@ def main(ss_paths, xs_paths, out_path):
     ss_n = ss_data.shape[1]
     xs_n = xs_data.shape[1]
 
-    ss_mean = np.mean(ss_data, axis=0)
-    xs_mean = np.mean(xs_data, axis=0)
+    ss_mean = np.mean(ss_data, axis=1)
+    xs_mean = np.mean(xs_data, axis=1)
 
-    ss_std = np.std(ss_data, axis=0, ddof=1)
-    xs_std = np.std(xs_data, axis=0, ddof=1)
+    ss_std = np.std(ss_data, axis=1, ddof=1)
+    xs_std = np.std(xs_data, axis=1, ddof=1)
 
     t_denom = np.sqrt(ss_std**2/ss_n + xs_std**2/xs_n)
     t_stat = (xs_mean - ss_mean) / t_denom
