@@ -75,6 +75,9 @@ def main(ss_paths, xs_paths, out_path):
         "-log10p": nlp,
         "-log10q": nlq
     }
+    for k, v in cols.items(): ####
+        print(k)
+        print(v) 
     table = pd.DataFrame(cols)
     table.sort_values("-log10q")
 
