@@ -58,9 +58,9 @@ def main(ss_paths, xs_paths, out_path):
     df_denom = ((ss_std**2/ss_n)**2/(ss_n-1) + (xs_std**2/xs_n)**2/(xs_n-1))
     df = df_num / df_denom
 
-    pval = 2 * t.logsf(np.abs(t_stat), df)
-    nlp = -np.log10(pval)
-    qval = fdrcorrection(pval)
+    nlp = -(t.logsf(np.abs(t_stat), df) + np.log(2)) / np.log(10)
+    pval = 10**(-nlp)
+    _, qval = fdrcorrection(pval)
     nlq = -np.log10(qval)
 
     cols = {
