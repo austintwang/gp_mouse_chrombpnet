@@ -24,9 +24,10 @@ def load_logcts(hdf5_paths):
         data.append(logcts[indicators == 1])
     
     mat = np.column_stack(data)
-    return mat, chroms, coords
 
-def main(ss_paths, xs_paths, out_path):
+    return mat, chroms.astype(str), coords
+
+def main(ss_paths, xs_paths, out_path, log_path):
     h5_ss_paths = [os.path.join(i, "out_predictions.h5") for i in ss_paths]
     h5_xs_paths = [os.path.join(i, "out_predictions.h5") for i in xs_paths]
 
@@ -75,18 +76,27 @@ def main(ss_paths, xs_paths, out_path):
         "-log10p": nlp,
         "-log10q": nlq
     }
-    for k, v in cols.items(): ####
-        print(k)
-        print(v.shape)
-        print(v) 
+    # for k, v in cols.items(): ####
+    #     print(k)
+    #     print(v.shape)
+    #     print(v) 
     table = pd.DataFrame(cols)
-    table.sort_values("-log10q")
+    df[col] = df[col].str.decode('utf-8')
+    table.sort_values("-log10q", inplace=True)
 
     table.to_csv(out_path, sep="\t", index=False)
+
+    f10 = nlq >= 1
+    f1 = nlq >= 2
+    with open(log_path, "w") as f:
+        f.write(f"10% FDR:\t{f10.sum()}\t{f10.mean()}\n")
+        f.write(f"1% FDR:\t{f1.sum()}\t{f1.mean()}\n")
 
 out_path, = snakemake.output
 
 ss_paths = snakemake.input["ss_data"]
 xs_paths = snakemake.input["xs_data"]
 
-main(ss_paths, xs_paths, out_path)
+log_path = snakemake.log["score"]
+
+main(ss_paths, xs_paths, out_path, log_path)

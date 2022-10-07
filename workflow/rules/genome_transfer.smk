@@ -89,6 +89,8 @@ rule score_peaks:
         xs_data = expand("results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs", fold=config["folds_used"], allow_missing=True)
     output:
         "results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"
+    log:
+        score = "logs/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.log"
     conda:
         "../envs/genome_transfer.yaml"
     script:
