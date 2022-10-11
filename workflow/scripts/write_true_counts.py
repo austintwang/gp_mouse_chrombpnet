@@ -41,6 +41,9 @@ def main(model_dir, genome_path, bw_path, peaks_path, folds_path, out_path):
     test_generator = initializers.initialize_generators(args, mode="test", parameters=None, return_coords=True)
     true_counts_sum, coords = output_counts(test_generator)
 
+    print(true_counts_sum) ####
+    print(coords) ####
+
     num_examples=len(coords)
 
     coords_chrom_dset =  [str(coords[i][0]) for i in range(num_examples)]
