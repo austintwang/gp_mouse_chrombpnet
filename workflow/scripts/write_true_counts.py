@@ -28,7 +28,7 @@ def main(model_dir, genome_path, bw_path, peaks_path, folds_path, out_path):
         genome = genome_path,
         bigwig = bw_path,
         peaks = peaks_path,
-        nonpeaks = None,
+        nonpeaks = "None",
         output_prefix = "tmp/",
         chr_fold_path = folds_path,
         trackables = ['loss','val_loss'],
