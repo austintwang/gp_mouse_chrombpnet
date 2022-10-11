@@ -126,7 +126,9 @@ rule all:
         # expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/train"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
         # expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
         # expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
-        expand(export_path("assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"), assembly=assemblies, cluster=clusters_l3)
+        expand(export_path("assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"), assembly=assemblies, cluster=clusters_l3),
+        expand(export_path("assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv"), assembly=assemblies, cluster=clusters_l3)
+
 
 rule import_bias:
     """
@@ -220,10 +222,13 @@ rule export_peak_scores:
     Export chrombpnet genome transfer peak scores
     """
     input:
-        "results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"
+        scores = "results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"
+        counts = "results/assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv"
     output:
-        export_path("assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv")
+        scores = export_path("assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"),
+        counts = export_path("assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv")
     conda:
         "envs/fetch.yaml"
     shell:
-        "cp {input} {output}"
+        "cp {input.scores} {output.scores};"
+        "cp {input.counts} {output.counts}"
