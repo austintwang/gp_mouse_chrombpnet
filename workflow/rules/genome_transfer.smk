@@ -101,7 +101,10 @@ rule extract_true_counts:
     Extract true count data for peaks
     """
     input:
-        "results/assembly/{assembly}/clusters/{cluster}/peaks_edge_filtered.bed"
+        fasta = "inputs/assembly/{assembly}/genome.fa",
+        peaks = "results/assembly/{assembly}/clusters/{cluster}/peaks_edge_filtered.bed",
+        bigwig = "inputs/assembly/{assembly}/clusters/{cluster}/coverage.bw",
+        folds = "genomes/{assembly}_folds_all.json"
     output:
         "results/assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv"
     conda:

@@ -21,8 +21,15 @@ def output_counts(test_generator):
 
     return np.array(true_counts_sum), np.array(coordinates)
 
-def main(model_path, out_path):
+def main(model_path, genome_path, bw_path, peaks_path, folds_path, out_path):
     args = SimpleNamespace(
+        genome = genome_path,
+        bigwig = bw_path,
+        peaks = peaks_path,
+        nonpeaks = None,
+        output_prefix = "tmp/",
+        chr_fold_path = folds_path,
+        trackables = ['loss','val_loss'],
         model_h5 = model_path,
         batch_size = 512,
         seed = 1234,
@@ -47,6 +54,10 @@ def main(model_path, out_path):
 
 out_path, = snakemake.output
 
-model_path, = snakemake.input
+model_path = snakemake.input["model"]
+genome_path = snakemake.input["genome"]
+bw_path = snakemake.input["bigwig"]
+peaks_path = snakemake.input["peaks"]
+folds_path = snakemake.input["folds"]
 
-main(model_path, out_path)
+main(model_path, genome_path, bw_path, peaks_path, folds_path, out_path)
