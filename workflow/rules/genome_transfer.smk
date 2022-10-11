@@ -101,7 +101,7 @@ rule extract_true_counts:
     Extract true count data for peaks
     """
     input:
-        model_dir = "results/assembly/{assembly}/clusters/{cluster}/folds/fold_0/train",
+        model_dir = "results/assembly/{assembly}/clusters/{cluster}/folds/0/train",
         fasta = "inputs/assembly/{assembly}/genome.fa",
         peaks = "results/assembly/{assembly}/clusters/{cluster}/peaks_edge_filtered.bed",
         bigwig = "inputs/assembly/{assembly}/clusters/{cluster}/coverage.bw",
