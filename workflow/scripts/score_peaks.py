@@ -52,8 +52,9 @@ def main(ss_paths, xs_paths, out_path, log_path):
     ss_std = np.std(ss_data, axis=1, ddof=1)
     xs_std = np.std(xs_data, axis=1, ddof=1)
 
-    t_denom = np.sqrt(ss_std**2/ss_n + xs_std**2/xs_n)
-    t_stat = (xs_mean - ss_mean) / t_denom
+    diff_std = np.sqrt(ss_std**2/ss_n + xs_std**2/xs_n)
+    diff_mean = xs_mean - ss_mean
+    t_stat = diff_mean / diff_std
 
     df_num = (ss_std**2/ss_n + xs_std**2/xs_n)**2
     df_denom = ((ss_std**2/ss_n)**2/(ss_n-1) + (xs_std**2/xs_n)**2/(xs_n-1))
@@ -71,6 +72,8 @@ def main(ss_paths, xs_paths, out_path, log_path):
         "xs_mean": xs_mean,
         "ss_std": ss_std,
         "xs_std": xs_std,
+        "diff_mean": diff_mean,
+        "diff_std": diff_std,
         "t_stat": t_stat,
         "est_df": df,
         "-log10p": nlp,

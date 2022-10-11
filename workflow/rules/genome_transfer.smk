@@ -102,7 +102,7 @@ rule extract_true_counts:
     """
     input:
         model_dir = "results/assembly/{assembly}/clusters/{cluster}/folds/0/train",
-        fasta = "inputs/assembly/{assembly}/genome.fa",
+        genome = "inputs/assembly/{assembly}/genome.fa",
         peaks = "results/assembly/{assembly}/clusters/{cluster}/peaks_edge_filtered.bed",
         bigwig = "inputs/assembly/{assembly}/clusters/{cluster}/coverage.bw",
         folds = "genomes/{assembly}_folds_all.json"
