@@ -95,3 +95,16 @@ rule score_peaks:
         "../envs/genome_transfer.yaml"
     script:
         "../scripts/score_peaks.py"
+
+rule extract_true_counts:
+    """
+    Extract true count data for peaks
+    """
+    input:
+        "results/assembly/{assembly}/clusters/{cluster}/peaks_edge_filtered.bed"
+    output:
+        "results/assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv"
+    conda:
+        "../envs/chrombpnet.yaml"
+    script:
+        "../scripts/write_true_counts.py"
