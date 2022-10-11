@@ -110,5 +110,7 @@ rule extract_true_counts:
         "results/assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv"
     conda:
         "../envs/chrombpnet.yaml"
+    resources:
+        mem_mb = 40000
     script:
         "../scripts/write_true_counts.py"
