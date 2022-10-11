@@ -49,7 +49,7 @@ def main(model_dir, genome_path, bw_path, peaks_path, folds_path, out_path):
     coords_chrom_dset =  [str(coords[i][0]) for i in range(num_examples)]
     coords_center_dset =  [int(coords[i][1]) for i in range(num_examples)]
     coords_peak_dset =  [int(coords[i][3]) for i in range(num_examples)]
-    true_counts_dset = [int(true_counts_sum[i]) for i in range(num_examples)]
+    true_counts_dset = [true_counts_sum[i] for i in range(num_examples)]
 
     with open(out_path, "w") as f:
         f.write("chrom\tsummit_pos\tlog1p_true_counts\n")
