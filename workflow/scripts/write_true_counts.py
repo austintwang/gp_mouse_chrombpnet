@@ -1,4 +1,5 @@
 from types import SimpleNamespace
+import os
 
 import numpy as np
 
@@ -21,7 +22,8 @@ def output_counts(test_generator):
 
     return np.array(true_counts_sum), np.array(coordinates)
 
-def main(model_path, genome_path, bw_path, peaks_path, folds_path, out_path):
+def main(model_dir, genome_path, bw_path, peaks_path, folds_path, out_path):
+    model_path = os.path.join(model_dir, "chrombpnet_wo_bias.h5")
     args = SimpleNamespace(
         genome = genome_path,
         bigwig = bw_path,
@@ -54,10 +56,10 @@ def main(model_path, genome_path, bw_path, peaks_path, folds_path, out_path):
 
 out_path, = snakemake.output
 
-model_path = snakemake.input["model"]
+model_dir = snakemake.input["model_dir"]
 genome_path = snakemake.input["genome"]
 bw_path = snakemake.input["bigwig"]
 peaks_path = snakemake.input["peaks"]
 folds_path = snakemake.input["folds"]
 
-main(model_path, genome_path, bw_path, peaks_path, folds_path, out_path)
+main(model_dir, genome_path, bw_path, peaks_path, folds_path, out_path)
