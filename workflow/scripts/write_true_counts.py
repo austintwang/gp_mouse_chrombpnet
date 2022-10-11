@@ -54,7 +54,7 @@ def main(model_dir, genome_path, bw_path, peaks_path, folds_path, out_path):
     with open(out_path, "w") as f:
         f.write("chrom\tsummit_pos\tlog1p_true_counts\n")
         for a, b, c, d in zip(coords_chrom_dset, coords_center_dset, coords_peak_dset, true_counts_dset):
-            if c == '1':
+            if c == 1:
                 f.write(f"{a}\t{b}\t{d}\n")
 
 
