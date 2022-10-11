@@ -222,7 +222,7 @@ rule export_peak_scores:
     Export chrombpnet genome transfer peak scores
     """
     input:
-        scores = "results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"
+        scores = "results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv",
         counts = "results/assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv"
     output:
         scores = export_path("assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"),
