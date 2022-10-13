@@ -114,3 +114,22 @@ rule extract_true_counts:
         mem_mb = 40000
     script:
         "../scripts/write_true_counts.py"
+
+rule merge_peak_scores:
+    """
+    Merge peak scoring data
+    """
+    input:
+        scores = expand("results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv", cluster=clusters_l3, allow_missing=True),
+        counts = expand("results/assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv", cluster=clusters_l3, allow_missing=True)
+    output:
+        data = "results/assembly/{assembly}/scores_merged/data.tsv"
+        summary = "results/assembly/{assembly}/scores_merged/summary.tsv"
+    params:
+        clusters = clusters_l3
+    conda:
+        "../envs/genome_transfer.yaml"
+    resources:
+        mem_mb = 40000
+    script:
+        "../scripts/merge_peak_scores.py"

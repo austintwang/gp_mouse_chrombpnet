@@ -127,7 +127,9 @@ rule all:
         # expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
         # expand(export_path("assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs"), assembly=assemblies, cluster=clusters_l3, fold=config["folds_used"]),
         expand(export_path("assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"), assembly=assemblies, cluster=clusters_l3),
-        expand(export_path("assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv"), assembly=assemblies, cluster=clusters_l3)
+        expand(export_path("assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv"), assembly=assemblies, cluster=clusters_l3),
+        expand(export_path("assembly/{assembly}/scores_merged/data.tsv"), assembly=assemblies),
+        expand(export_path("assembly/{assembly}/scores_merged/summary.tsv"), assembly=assemblies)
 
 
 rule import_bias:
@@ -232,3 +234,19 @@ rule export_peak_scores:
     shell:
         "cp {input.scores} {output.scores};"
         "cp {input.counts} {output.counts}"
+
+rule export_peak_scores_merged:
+    """
+    Export chrombpnet genome transfer merged peak scores
+    """
+    input:
+        data = "results/assembly/{assembly}/scores_merged/data.tsv"
+        summary = "results/assembly/{assembly}/scores_merged/summary.tsv"
+    output:
+        data = export_path("assembly/{assembly}/scores_merged/data.tsv"),
+        summary = export_path("assembly/{assembly}/scores_merged/summary.tsv")
+    conda:
+        "envs/fetch.yaml"
+    shell:
+        "cp {input.data} {output.data};"
+        "cp {input.summary} {output.summary}"
