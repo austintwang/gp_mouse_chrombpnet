@@ -240,7 +240,7 @@ rule export_peak_scores_merged:
     Export chrombpnet genome transfer merged peak scores
     """
     input:
-        data = "results/assembly/{assembly}/scores_merged/data.tsv"
+        data = "results/assembly/{assembly}/scores_merged/data.tsv",
         summary = "results/assembly/{assembly}/scores_merged/summary.tsv"
     output:
         data = export_path("assembly/{assembly}/scores_merged/data.tsv"),

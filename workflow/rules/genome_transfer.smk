@@ -123,7 +123,7 @@ rule merge_peak_scores:
         scores = expand("results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv", cluster=clusters_l3, allow_missing=True),
         counts = expand("results/assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv", cluster=clusters_l3, allow_missing=True)
     output:
-        data = "results/assembly/{assembly}/scores_merged/data.tsv"
+        data = "results/assembly/{assembly}/scores_merged/data.tsv",
         summary = "results/assembly/{assembly}/scores_merged/summary.tsv"
     params:
         clusters = clusters_l3
