@@ -12,7 +12,7 @@ def parse_scores(scores_path):
 
 def parse_counts(counts_path):
     counts_data = pd.read_csv(counts_path, sep='\t', header=0)
-    log1pcounts = counts_data["tlog1p_true_counts"]
+    log1pcounts = counts_data["log1p_true_counts"]
     avg_logcounts = np.mean(log1pcounts)
 
     return counts_data, avg_logcounts
