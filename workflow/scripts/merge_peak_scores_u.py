@@ -1,0 +1,63 @@
+import pandas as pd
+import numpy as np
+
+def parse_scores(scores_path):
+    scores_data = pd.read_csv(scores_path, sep='\t', header=0)
+    nlq = scores_data["-log10q"]
+    f10 = np.mean(nlq >= 1)
+    f1 = np.mean(nlq >= 2)
+    nlq_qn = scores_data["-log10q_qn"]
+    f10_qn = np.mean(nlq_qn >= 1)
+    f1_qn = np.mean(nlq_qn >= 2)
+    n = len(nlq)
+    
+    return scores_data, f10, f1, f10_qn, f1_qn, n
+
+def parse_counts(counts_path):
+    counts_data = pd.read_csv(counts_path, sep='\t', header=0)
+    log1pcounts = counts_data["log1p_true_counts"]
+    avg_logcounts = np.mean(log1pcounts)
+
+    return counts_data, avg_logcounts
+
+def main(scores_paths, counts_paths, clusters, out_path_data, out_path_summary):
+    dfs = []
+    summary_records = []
+    for sp, cp, c in zip(scores_paths, counts_paths, clusters):
+        scores_data, f10, f1, f10_qn, f1_qn, n = parse_scores(sp)
+        counts_data, avg_logcounts = parse_counts(cp)
+
+        data_merged = pd.merge(scores_data, counts_data,  how='left', left_on=['chrom','summit_pos'], right_on=['chrom','summit_pos'])
+        data_merged['Label'] = c
+        dfs.append(data_merged)
+
+        record = {
+            "label": c,
+            "fdr10": f10,
+            "fdr1": f1,
+            "fdr10": f10_qn,
+            "fdr1": f1_qn,
+            "npeaks": n,
+            "coverage": avg_logcounts
+        }
+        summary_records.append(record)
+
+    data_df = pd.concat(dfs)
+    summary_df = pd.DataFrame.from_records(summary_records)
+
+    data_df.to_csv(out_path_data, sep="\t", index=False)
+    summary_df.to_csv(out_path_summary, sep="\t", index=False)
+
+out_path_data = snakemake.output["data"]
+out_path_summary = snakemake.output["summary"]
+
+scores_paths = snakemake.input["scores"]
+counts_paths = snakemake.input["counts"]
+
+clusters = snakemake.params["clusters"]
+
+main(scores_paths, counts_paths, clusters, out_path_data, out_path_summary)
+    
+
+
+

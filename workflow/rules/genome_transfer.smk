@@ -96,6 +96,22 @@ rule score_peaks:
     script:
         "../scripts/score_peaks.py"
 
+rule score_peaks_u:
+    """
+    Score peaks across species using genome transfer (Mann-Whitney U test)
+    """
+    input:
+        ss_data = expand("results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss", fold=config["folds_used"], allow_missing=True),
+        xs_data = expand("results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs", fold=config["folds_used"], allow_missing=True)
+    output:
+        "results/assembly/{assembly}/clusters/{cluster}/transfer/score_peaks_u.tsv"
+    log:
+        score = "logs/assembly/{assembly}/clusters/{cluster}/transfer/score_peaks_u.log"
+    conda:
+        "../envs/genome_transfer.yaml"
+    script:
+        "../scripts/score_peaks.py"
+
 rule extract_true_counts:
     """
     Extract true count data for peaks
@@ -133,3 +149,22 @@ rule merge_peak_scores:
         mem_mb = 40000
     script:
         "../scripts/merge_peak_scores.py"
+
+rule merge_peak_scores_u:
+    """
+    Merge peak scoring data (U test)
+    """
+    input:
+        scores = expand("results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores_u.tsv", cluster=clusters_l3, allow_missing=True),
+        counts = expand("results/assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv", cluster=clusters_l3, allow_missing=True)
+    output:
+        data = "results/assembly/{assembly}/scores_merged_u/data.tsv",
+        summary = "results/assembly/{assembly}/scores_merged_u/summary.tsv"
+    params:
+        clusters = clusters_l3
+    conda:
+        "../envs/genome_transfer.yaml"
+    resources:
+        mem_mb = 40000
+    script:
+        "../scripts/merge_peak_scores_u.py"
