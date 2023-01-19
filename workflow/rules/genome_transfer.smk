@@ -158,8 +158,8 @@ rule merge_peak_scores_u:
         scores = expand("results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores_u.tsv", cluster=clusters_l3, allow_missing=True),
         counts = expand("results/assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv", cluster=clusters_l3, allow_missing=True)
     output:
-        data = "results/assembly/{assembly}/scores_merged_u/data.tsv",
-        summary = "results/assembly/{assembly}/scores_merged_u/summary.tsv"
+        data = "results/assembly/{assembly}/scores_merged/data_u.tsv",
+        summary = "results/assembly/{assembly}/scores_merged/summary_u.tsv"
     params:
         clusters = clusters_l3
     conda:
