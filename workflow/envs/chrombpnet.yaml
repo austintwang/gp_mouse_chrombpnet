@@ -14,4 +14,4 @@ dependencies:
   - bioconda::ucsc-bedgraphtobigwig=377
   - bioconda::pybigwig=0.3.18
   - pip: 
-    - "--editable=git+ssh://git@github.com/kundajelab/chrombpnet.git@master#egg=chrombpnet"
+    - "--editable=git+ssh://git@github.com/kundajelab/chrombpnet.git@v1.2#egg=chrombpnet"
