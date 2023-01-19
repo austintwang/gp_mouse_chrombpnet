@@ -7,5 +7,5 @@ default-resources:
   - mem_mb=1000
   - gpu_cmd=""
 
-jobs: 100
+jobs: 50
 rerun-triggers: mtime
