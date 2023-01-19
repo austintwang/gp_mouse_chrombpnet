@@ -2,7 +2,7 @@ workdir: .
 
 max_threads_per_rule: 1
 
-import_dir: /oak/stanford/groups/akundaje/atwang/gp_mouse_chrombpnet
+import_dir: /oak/stanford/groups/akundaje/atwang/gp_mouse_chrombpnet_import
 export_dir: /oak/stanford/groups/akundaje/atwang/gp_mouse_chrombpnet_results
 
 folds_used:
