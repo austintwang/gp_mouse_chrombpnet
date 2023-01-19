@@ -104,7 +104,7 @@ rule score_peaks_u:
         ss_data = expand("results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss", fold=config["folds_used"], allow_missing=True),
         xs_data = expand("results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs", fold=config["folds_used"], allow_missing=True)
     output:
-        "results/assembly/{assembly}/clusters/{cluster}/transfer/score_peaks_u.tsv"
+        "results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores_u.tsv"
     log:
         score = "logs/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores_u.log"
     conda:
