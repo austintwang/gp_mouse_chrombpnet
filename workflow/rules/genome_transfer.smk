@@ -106,7 +106,7 @@ rule score_peaks_u:
     output:
         "results/assembly/{assembly}/clusters/{cluster}/transfer/score_peaks_u.tsv"
     log:
-        score = "logs/assembly/{assembly}/clusters/{cluster}/transfer/score_peaks_u.log"
+        score = "logs/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores_u.log"
     conda:
         "../envs/genome_transfer.yaml"
     script:
