@@ -110,7 +110,7 @@ rule score_peaks_u:
     conda:
         "../envs/genome_transfer.yaml"
     script:
-        "../scripts/score_peaks.py"
+        "../scripts/score_peaks_u.py"
 
 rule extract_true_counts:
     """
