@@ -35,8 +35,8 @@ def main(scores_paths, counts_paths, clusters, out_path_data, out_path_summary):
             "label": c,
             "fdr10": f10,
             "fdr1": f1,
-            "fdr10": f10_qn,
-            "fdr1": f1_qn,
+            "fdr10_n": f10_qn,
+            "fdr1_n": f1_qn,
             "npeaks": n,
             "coverage": avg_logcounts
         }
