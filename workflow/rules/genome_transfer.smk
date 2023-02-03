@@ -197,8 +197,8 @@ rule merge_gene_scores:
     input:
         scores = expand("results/assembly/{assembly}/clusters/{cluster}/transfer/gene_scores.tsv", cluster=clusters_l3, allow_missing=True)
     output:
-        data = "results/assembly/{assembly}/gene_scores_merged/data_u.tsv",
-        summary = "results/assembly/{assembly}/gene_scores_merged/summary_u.tsv"
+        data = "results/assembly/{assembly}/gene_scores_merged/data.tsv",
+        summary = "results/assembly/{assembly}/gene_scores_merged/summary.tsv"
     params:
         clusters = clusters_l3
     conda:
