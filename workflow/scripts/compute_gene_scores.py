@@ -206,7 +206,7 @@ def compute_scores(primary_tss_data, counts_data, slop, gamma):
 
             ss_preds = c["logcounts_ss"][idx_min:idx_max,:]
             xs_preds = c["logcounts_xs"][idx_min:idx_max,:]
-            peak_pos = c["pos"][idx_min:idx_max]
+            peak_pos = c["center"][idx_min:idx_max]
 
             dists = np.abs(peak_pos - tss_pos)
             weights = np.log(get_powerlaw_at_distance(dists, gamma))[:, np.newaxis]
