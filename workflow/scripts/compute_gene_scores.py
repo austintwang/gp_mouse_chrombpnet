@@ -157,6 +157,8 @@ def get_primary_tss(transcripts, counts_data):
     primary_tss_data = {}
     for c, transcripts_chrom in transcripts.items():
         primary_tss_data.setdefault(c, {})
+        if counts_chrom not in counts_data:
+            continue
         counts_chrom = counts_data[c]
         for t in transcripts_chrom:
             pos_min = t["pos"] - 500
@@ -187,7 +189,7 @@ def compute_scores(primary_tss_data, counts_data, slop, gamma):
         score_data[chrom] = {}
         c = counts_data[chrom]
         genes = list(t.keys())
-        scores = np.zeros(len(genes), 5)
+        # scores = np.zeros(len(genes), 5)
         for g in genes:
             tss_pos = t[g]["pos"]
             pos_min = tss_pos - slop
