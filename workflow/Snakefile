@@ -129,10 +129,11 @@ rule all:
         expand(export_path("assembly/{assembly}/clusters/{cluster}/transfer/peak_scores.tsv"), assembly=assemblies, cluster=clusters_l3),
         expand(export_path("assembly/{assembly}/clusters/{cluster}/transfer/peak_scores_u.tsv"), assembly=assemblies, cluster=clusters_l3),
         expand(export_path("assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv"), assembly=assemblies, cluster=clusters_l3),
+        expand(export_path("assembly/{assembly}/clusters/{cluster}/transfer/gene_scores.tsv"), assembly=assemblies, cluster=clusters_l3),
         expand(export_path("assembly/{assembly}/scores_merged/data.tsv"), assembly=assemblies),
         expand(export_path("assembly/{assembly}/scores_merged/summary.tsv"), assembly=assemblies),
         expand(export_path("assembly/{assembly}/scores_merged/data_u.tsv"), assembly=assemblies),
-        expand(export_path("assembly/{assembly}/scores_merged/summary_u.tsv"), assembly=assemblies)
+        expand(export_path("assembly/{assembly}/scores_merged/summary_u.tsv"), assembly=assemblies),
 
 
 rule import_bias:
@@ -163,6 +164,19 @@ rule import_genome:
     shell:
         "cp {input.fa} {output.fa}; "
         "cp -R {input.folds} {output.folds}"
+
+rule import_annotations:
+    """
+    Load genome annotation data
+    """
+    input:
+        gtf = import_path("assembly/{assembly}/annotations.gtf.gz"),
+    output:
+        gtf = "inputs/assembly/{assembly}/annotations.gtf.gz",
+    conda:
+        "envs/fetch.yaml"
+    shell:
+        "cp {input.gtf} {output.gtf}; "
 
 rule import_atac:
     """
@@ -262,3 +276,16 @@ rule export_peak_scores_merged:
         "cp {input.summary} {output.summary};"
         "cp {input.data_u} {output.data_u};"
         "cp {input.summary_u} {output.summary_u}"
+
+rule export_gene_scores:
+    """
+    Export chrombpnet genome transfer peak scores
+    """
+    input:
+        scores = "results/assembly/{assembly}/clusters/{cluster}/transfer/gene_scores.tsv",
+    output:
+        scores = export_path("assembly/{assembly}/clusters/{cluster}/transfer/gene_scores.tsv"),
+    conda:
+        "envs/fetch.yaml"
+    shell:
+        "cp {input.scores} {output.scores}"

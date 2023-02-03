@@ -168,3 +168,24 @@ rule merge_peak_scores_u:
         mem_mb = 40000
     script:
         "../scripts/merge_peak_scores_u.py"
+
+rule compute_gene_scores:
+    """
+    Score genes across species using ABC model
+    """
+    input:
+        ss_data = expand("results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss", fold=config["folds_used"], allow_missing=True),
+        xs_data = expand("results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs", fold=config["folds_used"], allow_missing=True),
+        true_counts = "results/assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv",
+        gtf = "inputs/assembly/{assembly}/annotations.gtf.gz"
+    output:
+        "results/assembly/{assembly}/clusters/{cluster}/transfer/gene_scores.tsv"
+    params:
+        slop = config["abc_slop"]
+        gamma = config["abc_gamma"]
+    log:
+        score = "logs/assembly/{assembly}/clusters/{cluster}/transfer/compute_gene_scores.log"
+    conda:
+        "../envs/genome_transfer.yaml"
+    script:
+        "../scripts/compute_gene_scores.py"

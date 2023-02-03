@@ -11,3 +11,6 @@ folds_used:
   - 2
   - 3
   - 4
+
+abc_slop: 5000000
+abc_gamma: 0.87
