@@ -130,8 +130,8 @@ def load_gtf_tss(gtf_path, assembly):
             else:
                 continue
             
-            attributes = [i.strip().split(" ") for i in attributes.rstrip(";").split(";")]
-            print([i for i in attributes if len(i) > 2])####
+            attributes = [i.strip().split(" ", 1) for i in attributes.rstrip(";").split(";")]
+            # print([i for i in attributes if len(i) > 2])####
             attributes = {k: v.strip("\"") for k, v in attributes}            
             gene_id = attributes["gene_id"]
             gene_name = attributes.get("gene_name", gene_id)
