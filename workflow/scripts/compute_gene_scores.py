@@ -239,7 +239,7 @@ def main(ss_paths, xs_paths, true_counts_path, gtf_path, out_path, assembly, slo
             record = tss_data.copy()
             scores_ss, scores_xs = scores[gene]
             ss_data = {f"score_ss_{i}": v for i, v in enumerate(scores_ss)}
-            xs_data = {f"score_ss_{i}": v for i, v in enumerate(scores_xs)}
+            xs_data = {f"score_xs_{i}": v for i, v in enumerate(scores_xs)}
             record.update(ss_data)
             record.update(xs_data)
 
