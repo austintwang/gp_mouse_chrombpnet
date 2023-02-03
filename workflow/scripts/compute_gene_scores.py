@@ -168,8 +168,8 @@ def get_primary_tss(transcripts, counts_data):
             if idx_max <= idx_min:
                 continue
 
-            tss_peak_idxs = counts_chrom["center"][idx_min:idx_max]
-            best_tss_value = np.max(counts_chrom["logcounts_true"][tss_peak_idxs])
+            # tss_peak_idxs = counts_chrom["center"][idx_min:idx_max]
+            best_tss_value = np.max(counts_chrom["logcounts_true"][idx_min:idx_max])
             record = t.copy()
             t["tss_count"] = best_tss_value
             
