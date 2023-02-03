@@ -181,7 +181,7 @@ rule compute_gene_scores:
     output:
         "results/assembly/{assembly}/clusters/{cluster}/transfer/gene_scores.tsv"
     params:
-        slop = config["abc_slop"]
+        slop = config["abc_slop"],
         gamma = config["abc_gamma"]
     log:
         score = "logs/assembly/{assembly}/clusters/{cluster}/transfer/compute_gene_scores.log"
