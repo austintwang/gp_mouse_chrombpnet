@@ -248,6 +248,8 @@ def main(ss_paths, xs_paths, true_counts_path, gtf_path, out_path, assembly, slo
             scores_xs_all.append(scores_xs)
 
     scores_df = pd.DataFrame.from_records(records)
+    scores_ss_all = np.array(scores_ss_all)
+    scores_xs_all = np.array(scores_xs_all)
     
     scores_mean_ss = np.mean(scores_ss_all, axis=1)
     scores_mean_xs = np.mean(scores_xs_all, axis=1)
