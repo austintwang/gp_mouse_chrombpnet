@@ -232,6 +232,8 @@ def main(ss_paths, xs_paths, true_counts_path, gtf_path, out_path, assembly, slo
     scores_ss_all = []
     scores_xs_all = []
     for c in chroms:
+        if c not in score_data:
+            continue
         scores = score_data[c]
         for gene, tss_data in primary_tss_data[c].items():
             record = tss_data.copy()
