@@ -134,6 +134,8 @@ rule all:
         expand(export_path("assembly/{assembly}/scores_merged/summary.tsv"), assembly=assemblies),
         expand(export_path("assembly/{assembly}/scores_merged/data_u.tsv"), assembly=assemblies),
         expand(export_path("assembly/{assembly}/scores_merged/summary_u.tsv"), assembly=assemblies),
+        expand(export_path("assembly/{assembly}/gene_scores_merged/data.tsv"), assembly=assemblies),
+        expand(export_path("assembly/{assembly}/gene_scores_merged/summary.tsv"), assembly=assemblies),
 
 
 rule import_bias:
@@ -279,7 +281,7 @@ rule export_peak_scores_merged:
 
 rule export_gene_scores:
     """
-    Export chrombpnet genome transfer peak scores
+    Export chrombpnet genome transfer gene scores
     """
     input:
         scores = "results/assembly/{assembly}/clusters/{cluster}/transfer/gene_scores.tsv",
@@ -289,3 +291,19 @@ rule export_gene_scores:
         "envs/fetch.yaml"
     shell:
         "cp {input.scores} {output.scores}"
+
+rule export_gene_scores_merged:
+    """
+    Export chrombpnet genome transfer merged gene scores
+    """
+    input:
+        data = "results/assembly/{assembly}/gene_scores_merged/data.tsv",
+        summary = "results/assembly/{assembly}/gene_scores_merged/summary.tsv",
+    output:
+        data = export_path("assembly/{assembly}/gene_scores_merged/data.tsv"),
+        summary = export_path("assembly/{assembly}/gene_scores_merged/summary.tsv"),
+    conda:
+        "envs/fetch.yaml"
+    shell:
+        "cp {input.data} {output.data};"
+        "cp {input.summary} {output.summary}"

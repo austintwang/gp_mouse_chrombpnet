@@ -189,3 +189,21 @@ rule compute_gene_scores:
         "../envs/genome_transfer.yaml"
     script:
         "../scripts/compute_gene_scores.py"
+
+rule merge_gene_scores:
+    """
+    Merge gene scoring data
+    """
+    input:
+        scores = expand("results/assembly/{assembly}/clusters/{cluster}/transfer/gene_scores.tsv", cluster=clusters_l3, allow_missing=True)
+    output:
+        data = "results/assembly/{assembly}/gene_scores_merged/data_u.tsv",
+        summary = "results/assembly/{assembly}/gene_scores_merged/summary_u.tsv"
+    params:
+        clusters = clusters_l3
+    conda:
+        "../envs/genome_transfer.yaml"
+    resources:
+        mem_mb = 40000
+    script:
+        "../scripts/merge_gene_scores.py"
