@@ -157,9 +157,9 @@ def get_primary_tss(transcripts, counts_data):
     primary_tss_data = {}
     for c, transcripts_chrom in transcripts.items():
         primary_tss_data.setdefault(c, {})
+        counts_chrom = counts_data[c]
         if counts_chrom not in counts_data:
             continue
-        counts_chrom = counts_data[c]
         for t in transcripts_chrom:
             pos_min = t["pos"] - 500
             pos_max = t["pos"] + 500
