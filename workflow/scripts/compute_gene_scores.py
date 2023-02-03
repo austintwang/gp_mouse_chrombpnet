@@ -90,13 +90,13 @@ def load_logcts(hdf5_paths_ss, hdf5_paths_xs, true_counts_path):
     chrom_order = chroms[np.sort(chrom_idx)]
     counts_data = {}
     for c in chrom_order:
-        inds_chrom = np.nonzero(chroms == c)
+        inds_chrom, = np.nonzero(chroms == c)
         coords_chrom_unsorted = coords[inds_chrom]
         sort_order = np.argsort(coords_chrom_unsorted)
         coords_chrom = coords_chrom_unsorted[sort_order]
-        print(inds_chrom)####
-        print(coords_chrom) ####
-        print(sort_order) ####
+        # print(inds_chrom)####
+        # print(coords_chrom) ####
+        # print(sort_order) ####
         inds = inds_chrom[sort_order]
 
         # mat_chrom = mat[inds,:]
