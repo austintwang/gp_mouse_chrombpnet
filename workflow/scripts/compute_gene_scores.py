@@ -213,8 +213,11 @@ def compute_scores(primary_tss_data, counts_data, slop, gamma):
     return score_data
 
 def main(ss_paths, xs_paths, true_counts_path, gtf_path, out_path, assembly, slop, gamma):
+    h5_ss_paths = [os.path.join(i, "out_predictions.h5") for i in ss_paths]
+    h5_xs_paths = [os.path.join(i, "out_predictions.h5") for i in xs_paths]
+
     transcripts = load_gtf_tss(gtf_path, assembly)
-    counts_data = load_logcts(ss_paths, xs_paths, true_counts_path)
+    counts_data = load_logcts(h5_ss_paths, h5_xs_paths, true_counts_path)
     primary_tss_data = get_primary_tss(transcripts, counts_data)
     score_data = compute_scores(primary_tss_data, counts_data, slop, gamma)
 
