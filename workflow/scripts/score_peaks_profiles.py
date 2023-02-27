@@ -96,9 +96,9 @@ def permutation_test_energy(ss_self_jsds, xs_self_jsds, cross_jsds, energy_score
         [cross_jsds.transpose(0,2,1), xs_self_jsds],
     ])
     num_shuffles = comb(num_total, num_ss, exact=True)
-    shuffles = np.full((1,num_total,num_shuffles), -1)
+    shuffles = np.full((1,num_total,num_shuffles), -1/num_xs )
     for i, c in enumerate(itertools.combinations(range(num_total), num_ss)):
-        shuffles[:,c,i] = 1
+        shuffles[:,c,i] = 1/num_ss
     
     scores = (shuffles * (jsds_all @ shuffles)).sum(axis=1)
     scores_sorted = np.sort(scores, axis=1)
