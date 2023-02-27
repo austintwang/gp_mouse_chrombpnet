@@ -89,7 +89,7 @@ def pairwise_jsds(profs_ss, profs_xs):
     return ss_self_jsds, xs_self_jsds, cross_jsds
 
 def permutation_test_energy(ss_self_jsds, xs_self_jsds, cross_jsds, energy_scores):
-    num_ss, num_xs = cross_jsds.shape[0:2]
+    num_ss, num_xs = cross_jsds.shape[1:3]
     num_total = num_ss + num_xs
     jsds_all = np.block([
         [ss_self_jsds, cross_jsds],
