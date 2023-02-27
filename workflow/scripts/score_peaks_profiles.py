@@ -12,8 +12,8 @@ import pandas as pd
 def load_profiles(hdf5_paths_ss, hdf5_paths_xs):
     chroms = None
     coords = None
-    profs_ss = None
-    profs_xs = None
+    profs_ss = []
+    profs_xs = []
 
     for p in hdf5_paths_ss:
         with h5py.File(p) as f:
