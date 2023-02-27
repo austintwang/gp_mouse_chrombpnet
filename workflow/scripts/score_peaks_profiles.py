@@ -102,7 +102,7 @@ def permutation_test_energy(ss_self_jsds, xs_self_jsds, cross_jsds, energy_score
     
     scores = (shuffles * (jsds_all @ shuffles)).sum(axis=1)
     scores_sorted = np.sort(scores, axis=1)
-    nulls = scores_sorted - energy_scores
+    nulls = scores_sorted - energy_scores[:,np.newaxis]
     pos = np.apply_along_axis(np.searchsorted, 1, nulls, 0)
     pvals = 1 - pos / num_shuffles
 
