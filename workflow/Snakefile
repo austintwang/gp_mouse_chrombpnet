@@ -134,6 +134,8 @@ rule all:
         expand(export_path("assembly/{assembly}/scores_merged/summary.tsv"), assembly=assemblies),
         expand(export_path("assembly/{assembly}/scores_merged/data_u.tsv"), assembly=assemblies),
         expand(export_path("assembly/{assembly}/scores_merged/summary_u.tsv"), assembly=assemblies),
+        expand(export_path("assembly/{assembly}/scores_merged/data_profiles.tsv"), assembly=assemblies),
+        expand(export_path("assembly/{assembly}/scores_merged/summary_profiles.tsv"), assembly=assemblies),
         expand(export_path("assembly/{assembly}/gene_scores_merged/data.tsv"), assembly=assemblies),
         expand(export_path("assembly/{assembly}/gene_scores_merged/summary.tsv"), assembly=assemblies),
 
@@ -266,18 +268,24 @@ rule export_peak_scores_merged:
         summary = "results/assembly/{assembly}/scores_merged/summary.tsv",
         data_u = "results/assembly/{assembly}/scores_merged/data_u.tsv",
         summary_u = "results/assembly/{assembly}/scores_merged/summary_u.tsv",
+        data_profiles = "results/assembly/{assembly}/scores_merged/data_profiles.tsv",
+        summary_profiles = "results/assembly/{assembly}/scores_merged/summary_profiles.tsv",
     output:
         data = export_path("assembly/{assembly}/scores_merged/data.tsv"),
         summary = export_path("assembly/{assembly}/scores_merged/summary.tsv"),
         data_u = export_path("assembly/{assembly}/scores_merged/data_u.tsv"),
         summary_u = export_path("assembly/{assembly}/scores_merged/summary_u.tsv"),
+        data_profiles = export_path("assembly/{assembly}/scores_merged/data_profiles.tsv"),
+        summary_profiles = export_path("assembly/{assembly}/scores_merged/summary_profiles.tsv"),
     conda:
         "envs/fetch.yaml"
     shell:
         "cp {input.data} {output.data};"
         "cp {input.summary} {output.summary};"
         "cp {input.data_u} {output.data_u};"
-        "cp {input.summary_u} {output.summary_u}"
+        "cp {input.summary_u} {output.summary_u};"
+        "cp {input.data_profiles} {output.data_profiles};"
+        "cp {input.summary_profiles} {output.summary_profiles}"
 
 rule export_gene_scores:
     """

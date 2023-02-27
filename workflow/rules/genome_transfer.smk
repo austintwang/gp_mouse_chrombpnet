@@ -207,3 +207,37 @@ rule merge_gene_scores:
         mem_mb = 40000
     script:
         "../scripts/merge_gene_scores.py"
+
+rule score_peaks_profiles:
+    """
+    Score peaks across species using genome transfer (profile energy test)
+    """
+    input:
+        ss_data = expand("results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/ss", fold=config["folds_used"], allow_missing=True),
+        xs_data = expand("results/assembly/{assembly}/clusters/{cluster}/folds/{fold}/transfer/xs", fold=config["folds_used"], allow_missing=True)
+    output:
+        "results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores_profiles.tsv"
+    conda:
+        "../envs/genome_transfer.yaml"
+    script:
+        "../scripts/score_peaks_profiles.py"
+
+rule merge_peak_scores_profiles:
+    """
+    Merge peak scoring data (profiles)
+    """
+    input:
+        scores = expand("results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores_profiles.tsv", cluster=clusters_l3, allow_missing=True),
+        scores_counts = expand("results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores_u.tsv", cluster=clusters_l3, allow_missing=True),
+        counts = expand("results/assembly/{assembly}/clusters/{cluster}/transfer/true_counts.tsv", cluster=clusters_l3, allow_missing=True)
+    output:
+        data = "results/assembly/{assembly}/scores_merged/data_profiles.tsv",
+        summary = "results/assembly/{assembly}/scores_merged/summary_profiles.tsv"
+    params:
+        clusters = clusters_l3
+    conda:
+        "../envs/genome_transfer.yaml"
+    resources:
+        mem_mb = 40000
+    script:
+        "../scripts/merge_peak_scores_profiles.py"
