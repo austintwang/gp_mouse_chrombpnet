@@ -219,6 +219,8 @@ rule score_peaks_profiles:
         "results/assembly/{assembly}/clusters/{cluster}/transfer/peak_scores_profiles.tsv"
     conda:
         "../envs/genome_transfer.yaml"
+    resources:
+        mem_mb = 40000
     script:
         "../scripts/score_peaks_profiles.py"
 
