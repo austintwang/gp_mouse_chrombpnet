@@ -98,6 +98,7 @@ with open("config/cluster_labels_l3.tsv") as sample_file:
         clusters_l2_rem.add(label_l2)
     clusters_l3 |= clusters_l2 - clusters_l2_rem
 
+clusters_l3 = list(clusters_l3)
 
 workdir: 
     config['workdir']
