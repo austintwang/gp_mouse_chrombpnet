@@ -1,5 +1,6 @@
 channels:
   - conda-forge
+  - bioconda
   - nodefaults
 dependencies:
   - conda-forge::libcurl-static=7.78.0
@@ -8,6 +9,5 @@ dependencies:
   - conda-forge::scipy=1.8.0
   - conda-forge::pandas=1.4.1
   - conda-forge::statsmodels=0.13.2
-  - conda-forge::pip=22.2.2
-  - pip: 
-    - h5py
+  - conda-forge::h5py=3.8.0
+  - bioconda::pybigwig=0.3.22
